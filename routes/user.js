@@ -1,11 +1,11 @@
 import express from "express";
 import {
+  forgotpass,
   getallusers,
   getusers,
   loginuser,
   logout,
   registeruser,
-  setcookies,
 } from "../controllers/user.js";
 import { isauth } from "../middlewares/auth.js";
 
@@ -15,12 +15,12 @@ router.post("/register", registeruser);
 
 router.post("/all", getallusers);
 
-router.get("/cook", setcookies);
-
 router.get("/login", loginuser);
 
 router.get("/logout", logout);
 
 router.get("/getuser", isauth, getusers);
+
+router.post("/forgot/password", isauth, forgotpass);
 
 export default router;

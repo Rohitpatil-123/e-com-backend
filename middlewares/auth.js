@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 export const isauth = async (req, res, next) => {
   const { token } = req.cookies;
   if (!token) {
-    res.status(404).json({
+    return res.status(404).json({
       message: "user not found",
     });
   } else {
