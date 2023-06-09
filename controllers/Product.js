@@ -120,3 +120,35 @@ export const deletecart = async (req, res) => {
     });
   }
 };
+
+export const deleteproduct = async (req, res) => {
+  try {
+    const prodid = req.params.id;
+    const data = await product.findOne({ _id: prodid });
+    console.log(data._id);
+    if (!data) {
+      return res.status(200).json({
+        success: false,
+        message: "product not found",
+      });
+    } else {
+      const query = { _id: prodid };
+
+      const deletestatus = await product.deleteOne(query);
+      if (!deletestatus) {
+        return res
+          .status(200)
+          .json({ success: false, message: "some error occured" });
+      } else {
+        return res
+          .status(200)
+          .json({ success: true, message: "product deleted" });
+      }
+    }
+  } catch (error) {
+    return res.status(404).json({
+      success: false,
+      error,
+    });
+  }
+};

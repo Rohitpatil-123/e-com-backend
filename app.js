@@ -7,7 +7,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { config } from "dotenv";
 export const app = express();
-
+// mongodb+srv://pass:pass@e-com.unyla29.mongodb.net/?retryWrites=true
 config({
   path: "./data/config.env",
 });

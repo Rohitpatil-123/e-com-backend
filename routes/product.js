@@ -3,6 +3,7 @@ import {
   addcart,
   addproduct,
   deletecart,
+  deleteproduct,
   getcart,
   getpertiprod,
   getproduct,
@@ -13,6 +14,8 @@ const router = express.Router();
 router.get("/addproduct", addproduct);
 
 router.get("/getallproduct", getproduct);
+
+router.delete("/product/:id", deleteproduct);
 
 router.get("/product/:id", getpertiprod);
 
