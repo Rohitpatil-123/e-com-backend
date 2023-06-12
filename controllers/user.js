@@ -19,13 +19,18 @@ export const registeruser = async (req, res) => {
     const data = await user.create({ name, email, password: hashedpassword });
 
     const token = jwt.sign({ _id: data._id }, process.env.JWT_SECREAT);
-    res
-      .status(201)
-      .cookie("token", token, { httpOnly: true, maxAge: 15 * 60 * 1000 })
-      .json({
-        success: true,
-        message: "registered succesfully",
-      });
+
+    const options = {
+      httpOnly: true,
+      secure: true,
+      sameSite: true,
+      maxAge: 15 * 60 * 1000,
+    };
+
+    res.status(201).cookie("token", token, options).json({
+      success: true,
+      message: "registered succesfully",
+    });
   }
 };
 
@@ -45,10 +50,15 @@ export const loginuser = async (req, res) => {
   }
 
   const ismatch = await bcrypt.compare(password, data.password);
-
+  const options = {
+    httpOnly: true,
+    secure: true,
+    sameSite: true,
+    maxAge: 15 * 60 * 1000,
+  };
   if (ismatch) {
     const token = jwt.sign({ _id: data._id }, process.env.JWT_SECREAT);
-    return res.status(200).cookie("token", token).json({
+    return res.status(200).cookie("token", token, options).json({
       success: true,
       message: "Logged in successfully",
     });
