@@ -11,7 +11,7 @@ import {
 import { isauth } from "../middlewares/auth.js";
 const router = express.Router();
 
-router.get("/addproduct", addproduct);
+router.post("/addproduct", addproduct);
 
 router.get("/getallproduct", getproduct);
 

@@ -3,11 +3,10 @@ import { user } from "../models/user.js";
 import cloudinary from "../middlewares/Cloudinary.js";
 export const addproduct = async (req, res) => {
   const { name, price, description, category, image } = req.body;
-
   try {
     if (image) {
       const uploadedResponse = await cloudinary.uploader.upload(image, {
-        upload_preset: "online-shop",
+        upload_preset: "onlineShop",
       });
       if (uploadedResponse) {
         const data = await product.create({
