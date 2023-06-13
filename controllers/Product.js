@@ -1,20 +1,39 @@
 import { product } from "../models/product.js";
 import { user } from "../models/user.js";
-
+import cloudinary from "../middlewares/Cloudinary.js";
 export const addproduct = async (req, res) => {
-  const { name, price, description, category } = req.body;
+  const { name, price, description, category, image } = req.body;
 
-  const data = await product.create({ name, price, description, category });
-
-  if (data) {
-    return res.status(200).json({
-      success: true,
-      message: "data added successfully",
-    });
-  } else {
+  try {
+    if (image) {
+      const uploadedResponse = await cloudinary.uploader.upload(image, {
+        upload_preset: "online-shop",
+      });
+      if (uploadedResponse) {
+        const data = await product.create({
+          name,
+          price,
+          description,
+          category,
+          image: uploadedResponse,
+        });
+        if (data) {
+          return res.status(200).json({
+            success: true,
+            message: "data added successfully",
+          });
+        } else {
+          return res.status(404).json({
+            success: false,
+            message: "error occered",
+          });
+        }
+      }
+    }
+  } catch (error) {
     return res.status(404).json({
       success: false,
-      message: "error occered",
+      message: error,
     });
   }
 };
