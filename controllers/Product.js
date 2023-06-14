@@ -170,3 +170,12 @@ export const deleteproduct = async (req, res) => {
     });
   }
 };
+
+export const products = async (req, res) => {
+  const prodid = req.params.id;
+  const data = await product.find({ _id: prodid });
+  res.status(200).json({
+    success: true,
+    data,
+  });
+};
