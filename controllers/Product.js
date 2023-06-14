@@ -172,10 +172,24 @@ export const deleteproduct = async (req, res) => {
 };
 
 export const products = async (req, res) => {
-  const prodid = req.params.id;
-  const data = await product.find({ _id: prodid });
-  res.status(200).json({
-    success: true,
-    data,
-  });
+  try {
+    const prodid = req.params.id;
+    const data = await product.find({ _id: prodid });
+    if (data) {
+      res.status(200).json({
+        success: true,
+        data,
+      });
+    } else {
+      res.status(404).json({
+        success: true,
+        message: "data not found",
+      });
+    }
+  } catch (error) {
+    res.status(404).json({
+      success: true,
+      message: "error",
+    });
+  }
 };
