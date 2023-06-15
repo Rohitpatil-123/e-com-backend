@@ -1,15 +1,17 @@
+import nodemailer from "nodemailer";
 export const sendemail = async (options) => {
   var transport = nodemailer.createTransport({
-    host: "sandbox.smtp.mailtrap.io",
-    port: 2525,
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
     auth: {
-      user: "b6676495f77c8e",
-      pass: "3d68fce8632d7c",
+      user: "rspatil4518@gmail.com",
+      pass: "Rohit@123",
     },
   });
 
   const mailoptions = {
-    from: "rohitpatil8794@gmail.com",
+    from: "rspatil4518@gmail.com",
     to: options.email,
     subject: options.subject,
     text: options.message,

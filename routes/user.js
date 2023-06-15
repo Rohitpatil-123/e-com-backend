@@ -6,6 +6,7 @@ import {
   loginuser,
   logout,
   registeruser,
+  ckf,
 } from "../controllers/user.js";
 import { isauth } from "../middlewares/auth.js";
 
@@ -21,6 +22,8 @@ router.get("/logout", logout);
 
 router.get("/getuser", isauth, getusers);
 
-router.post("/forgot/password", isauth, forgotpass);
+router.post("/forgot/password", forgotpass);
+
+router.get("/cook", ckf);
 
 export default router;

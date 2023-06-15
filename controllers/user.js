@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 // import { sendemail } from "../middlewares/sendemail.js";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
+import { sendemail } from "../middlewares/sendemail.js";
 
 export const registeruser = async (req, res) => {
   const { name, email, password } = req.body;
@@ -27,10 +28,17 @@ export const registeruser = async (req, res) => {
       maxAge: 15 * 60 * 1000,
     };
 
-    res.status(201).cookie("token", token, options).json({
-      success: true,
-      message: "registered succesfully",
-    });
+    // if (process.env.NODE_ENV == "development") {
+    //   options = {};
+    // }
+
+    res
+      .status(201)
+      .cookie("token", token, { httpOnly: true, maxAge: 15 * 60 * 1000 })
+      .json({
+        success: true,
+        message: "registered succesfully",
+      });
   }
 };
 
@@ -50,18 +58,15 @@ export const loginuser = async (req, res) => {
   }
 
   const ismatch = await bcrypt.compare(password, data.password);
-  const options = {
-    httpOnly: true,
-    secure: true,
-    sameSite: true,
-    maxAge: 15 * 60 * 1000,
-  };
   if (ismatch) {
     const token = jwt.sign({ _id: data._id }, process.env.JWT_SECREAT);
-    return res.status(200).cookie("token", token, options).json({
-      success: true,
-      message: "Logged in successfully",
-    });
+    return res
+      .status(200)
+      .cookie("token", token, { httpOnly: true, maxAge: 15 * 60 * 1000 })
+      .json({
+        success: true,
+        message: "Logged in successfully",
+      });
   } else {
     return res.status(404).json({
       success: false,
@@ -106,28 +111,30 @@ export const forgotpass = async (req, res) => {
       "host"
     )}/password/reset/${resettoken}`;
 
-    let testAccount = await nodemailer.createTestAccount();
-
-    let transporter = await nodemailer.createTransport({
-      host: "smtp.ethereal.email",
-      port: 587,
-      auth: {
-        user: "elda.aufderhar@ethereal.email",
-        pass: "gXNbTvGUQa9gjbVZ3F",
-      },
+    await sendemail({
+      email: data.email,
+      message: reseturl,
+      subject: "click on the link to reset password",
     });
-
-    await transporter.sendMail({
-      from: '"rohit patil" <rohitpatil8794@gmail.com>', // sender address
-      to: data.email, // list of receivers
-      subject: reseturl, // Subject line
-      text: "click on the link to reset password", // plain text body
-    });
-
     res.status(200).json({
       success: true,
       message: `Email sent to ${data.email}`,
     });
+    // let transporter = await nodemailer.createTransport({
+    //   host: "smtp.ethereal.email",
+    //   port: 587,
+    //   auth: {
+    //     user: "elda.aufderhar@ethereal.email",
+    //     pass: "gXNbTvGUQa9gjbVZ3F",
+    //   },
+    // });
+
+    // await transporter.sendMail({
+    //   from: '"rohit patil" <rohitpatil8794@gmail.com>', // sender address
+    //   to: data.email, // list of receivers
+    //   subject: reseturl, // Subject line
+    //   text: "click on the link to reset password", // plain text body
+    // });
 
     // console.log(data.email);
     // // const resetpasswordtoken = user.getResettokenPassword();
@@ -185,4 +192,11 @@ export const forgotpass = async (req, res) => {
       message: error.message,
     });
   }
+};
+
+export const ckf = (req, res) => {
+  res.status(200).cookie("token", "rohit").json({
+    success: true,
+    message: "cookie sent",
+  });
 };
