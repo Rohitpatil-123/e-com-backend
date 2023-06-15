@@ -28,9 +28,9 @@ export const registeruser = async (req, res) => {
       maxAge: 15 * 60 * 1000,
     };
 
-    // if (process.env.NODE_ENV == "development") {
-    //   options = {};
-    // }
+    if (process.env.NODE_ENV == "development") {
+      options = {};
+    }
 
     res.status(201).cookie("token", token, options).json({
       success: true,
