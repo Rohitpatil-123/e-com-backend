@@ -24,7 +24,7 @@ export const registeruser = async (req, res) => {
     const options = {
       httpOnly: true,
       secure: true,
-      sameSite: true,
+      sameSite: "none",
       maxAge: 15 * 60 * 1000,
     };
 
@@ -32,13 +32,10 @@ export const registeruser = async (req, res) => {
     //   options = {};
     // }
 
-    res
-      .status(201)
-      .cookie("token", token, { httpOnly: true, maxAge: 15 * 60 * 1000 })
-      .json({
-        success: true,
-        message: "registered succesfully",
-      });
+    res.status(201).cookie("token", token, options).json({
+      success: true,
+      message: "registered succesfully",
+    });
   }
 };
 
@@ -60,13 +57,16 @@ export const loginuser = async (req, res) => {
   const ismatch = await bcrypt.compare(password, data.password);
   if (ismatch) {
     const token = jwt.sign({ _id: data._id }, process.env.JWT_SECREAT);
-    return res
-      .status(200)
-      .cookie("token", token, { httpOnly: true, maxAge: 15 * 60 * 1000 })
-      .json({
-        success: true,
-        message: "Logged in successfully",
-      });
+    const options = {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 15 * 60 * 1000,
+    };
+    return res.status(200).cookie("token", token, options).json({
+      success: true,
+      message: "Logged in successfully",
+    });
   } else {
     return res.status(404).json({
       success: false,
