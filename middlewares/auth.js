@@ -4,6 +4,7 @@ export const isauth = async (req, res, next) => {
   const { token } = req.cookies;
   if (!token) {
     return res.status(200).json({
+      success: false,
       message: "user not found",
     });
   } else {
