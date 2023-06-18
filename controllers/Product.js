@@ -89,7 +89,9 @@ export const addcart = async (req, res) => {
 export const getcart = async (req, res) => {
   try {
     //   let cartdata = [];
+
     const data = await user.findById(req.data._id).populate("cart");
+    const cartitem = await user.findById(req.data._id);
     if (data.cart.length == 0) {
       return res
         .status(200)
@@ -102,12 +104,22 @@ export const getcart = async (req, res) => {
       //   const dat = await product.findById(data.cart[i]);
       //   cartdata.push(dat);
       // }
+      let countObject = cartitem.cart.reduce(function (count, currentValue) {
+        return (
+          count[currentValue]
+            ? ++count[currentValue]
+            : (count[currentValue] = 1),
+          count
+        );
+      }, {});
+      let list = Object.values(countObject);
       return res.status(200).json({
         success: true,
         cartdata: data.cart.filter(
           (item, index) => data.cart.indexOf(item) === index
         ),
         total: data.total,
+        list,
       });
     }
   } catch (error) {
