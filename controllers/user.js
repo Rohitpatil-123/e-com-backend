@@ -21,7 +21,7 @@ export const registeruser = async (req, res) => {
 
     const token = jwt.sign({ _id: data._id }, process.env.JWT_SECREAT);
 
-    const options = {
+    let options = {
       httpOnly: true,
       secure: true,
       sameSite: "none",
@@ -57,12 +57,15 @@ export const loginuser = async (req, res) => {
   const ismatch = await bcrypt.compare(password, data.password);
   if (ismatch) {
     const token = jwt.sign({ _id: data._id }, process.env.JWT_SECREAT);
-    const options = {
+    let options = {
       httpOnly: true,
       secure: true,
       sameSite: "none",
       maxAge: 15 * 60 * 1000,
     };
+    if (process.env.NODE_ENV == "development") {
+      options = {};
+    }
     return res.status(200).cookie("token", token, options).json({
       success: true,
       message: "Logged in successfully",

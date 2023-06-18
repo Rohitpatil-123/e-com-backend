@@ -102,10 +102,11 @@ export const getcart = async (req, res) => {
       //   const dat = await product.findById(data.cart[i]);
       //   cartdata.push(dat);
       // }
-
       return res.status(200).json({
         success: true,
-        cartdata: data.cart,
+        cartdata: data.cart.filter(
+          (item, index) => data.cart.indexOf(item) === index
+        ),
         total: data.total,
       });
     }
@@ -126,16 +127,28 @@ export const deletecart = async (req, res) => {
     });
   } else {
     const prodid = req.params.id;
+    // for(let i=0;i<data.cart.length;i++){
+    //   if(prodid===data.cart[i]){
+
+    //   }
+    // }
     const index = data.cart.indexOf(prodid);
-    const dat = await product.findById(prodid);
-    data.total -= dat.price;
-    data.cart.splice(index, 1);
-    await data.save();
-    res.status(200).json({
-      success: true,
-      message: "product removed from cart",
-      total: data.total,
-    });
+    if (index == -1) {
+      res.status(404).json({
+        success: false,
+        message: "element is not in the cart",
+      });
+    } else {
+      const dat = await product.findById(prodid);
+      data.total -= dat.price;
+      data.cart.splice(index, 1);
+      await data.save();
+      res.status(200).json({
+        success: true,
+        message: "product removed from cart",
+        total: data.total,
+      });
+    }
   }
 };
 

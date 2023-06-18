@@ -1,8 +1,8 @@
 import express from "express";
 import userRouter from "./routes/user.js";
-import studentRouter from "./routes/students.js";
 import categoryRouter from "./routes/category.js";
 import productrouter from "./routes/product.js";
+import orderrouter from "./routes/order.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { config } from "dotenv";
@@ -24,9 +24,9 @@ app.use(
 
 // Using routes
 app.use(userRouter);
-app.use(studentRouter);
 app.use(categoryRouter);
 app.use(productrouter);
+app.use(orderrouter);
 
 app.get("/", (req, res) => {
   res.send("Nice working");
