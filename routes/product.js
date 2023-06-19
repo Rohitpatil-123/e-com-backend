@@ -2,6 +2,7 @@ import express from "express";
 import {
   addcart,
   addproduct,
+  deleteallocc,
   deletecart,
   deleteproduct,
   getcart,
@@ -27,5 +28,7 @@ router.get("/addcart/:id", isauth, addcart);
 router.get("/cartelem", isauth, getcart);
 
 router.get("/cartremove/:id", isauth, deletecart);
+
+router.get("/delete/:id", isauth, deleteallocc);
 
 export default router;

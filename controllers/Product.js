@@ -218,3 +218,27 @@ export const products = async (req, res) => {
     });
   }
 };
+
+export const deleteallocc = async (req, res) => {
+  let prodid = req.params.id;
+  const data = await user.findById(req.data._id);
+  let i = 0;
+  const p = data.cart.length;
+  const j = p;
+  while (i <= j) {
+    if (prodid == data.cart[i]) {
+      data.cart.splice(i, 1);
+    }
+    i++;
+  }
+  // for (let i = 0; i < len; i++) {
+  //   if (prodid == data.cart[i]) {
+  //     data.cart.splice(i, 1);
+  //   }
+  // }
+  data.save();
+  res.status(200).json({
+    success: true,
+    message: "product removed from cart",
+  });
+};

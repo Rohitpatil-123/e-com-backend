@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.get("/placeorder", isauth, placeorder);
 
-router.get("/orders", isauth, getorders);
+router.get("/orders", getorders);
 
 export default router;
