@@ -51,3 +51,21 @@ export const getorders = async (req, res) => {
     });
   }
 };
+
+export const deleteorder = async (req, res) => {
+  const id = req.params.id;
+  const query = { _id: id };
+  const data = await order.deleteOne(query);
+
+  if (!data) {
+    res.status(404).json({
+      success: false,
+      message: "some error",
+    });
+  } else {
+    res.status(200).json({
+      success: true,
+      message: "order completed",
+    });
+  }
+};
