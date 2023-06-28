@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["https://rcom.onrender.com/"],
+    origin: ["https://rcom.onrender.com"],
     methods: ["GET", "PUT", "POST", "DELETE"],
     credentials: true,
   })
