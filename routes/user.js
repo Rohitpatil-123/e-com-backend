@@ -7,6 +7,7 @@ import {
   logout,
   registeruser,
   ckf,
+  updateaddress,
 } from "../controllers/user.js";
 import { isauth } from "../middlewares/auth.js";
 
@@ -23,6 +24,8 @@ router.get("/logout", logout);
 router.get("/getuser", isauth, getusers);
 
 router.post("/forgot/password", forgotpass);
+
+router.post("/updateaddress", isauth, updateaddress);
 
 router.get("/cook", ckf);
 

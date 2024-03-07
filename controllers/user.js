@@ -203,3 +203,21 @@ export const ckf = (req, res) => {
     message: "cookie sent",
   });
 };
+
+export const updateaddress = async (req, res) => {
+  const { address } = req.body;
+  const data = await user.findOne({ _id: req.data._id });
+  if (!data) {
+    return res.status(404).json({
+      success: false,
+      message: "user not found",
+    });
+  } else {
+    data.address = address;
+    await data.save();
+    return res.status(200).json({
+      success: true,
+      message: "address updated",
+    });
+  }
+};

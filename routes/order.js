@@ -2,6 +2,7 @@ import express from "express";
 import {
   deleteorder,
   getorders,
+  getuserorders,
   placeorder,
   saveorder,
 } from "../controllers/order.js";
@@ -16,5 +17,7 @@ router.get("/orders", getorders);
 router.get("/deleteorder/:id", deleteorder);
 
 router.get("/orderpay/", isauth, saveorder);
+
+router.get("/getuserorders/:id", isauth, getuserorders);
 
 export default router;

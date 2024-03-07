@@ -14,9 +14,10 @@ config({
 // Using Middlewares
 app.use(express.json());
 app.use(cookieParser());
+// https://rcom.onrender.com,https://localhost:3000
 app.use(
   cors({
-    origin: ["https://rcom.onrender.com"],
+    origin: "https://rcom.onrender.com",
     methods: ["GET", "PUT", "POST", "DELETE"],
     credentials: true,
   })
